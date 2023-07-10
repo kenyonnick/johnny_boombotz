@@ -61,7 +61,7 @@ function draw() {
 }
 
 ComfyJS.onChat = (user, message, flags, self, extra) => {
-    if(message.slice(0, 5) === "stamp") {
+    if(message.slice(0, 5) === "stamp" && (extra.userState.subscriber || extra.user.vip)) {
         const index = Math.round(Math.random() * (images.length - 1));
         const img = images[index];
         const angle = Math.random() * 2 * Math.PI;
