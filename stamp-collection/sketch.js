@@ -1,6 +1,6 @@
 var images = [];
 
-const imageRoot = 'stamp-collection/imgs';
+const imageRoot = 'imgs';
 
 var minimumAngularVelocity = 0.1;
 
