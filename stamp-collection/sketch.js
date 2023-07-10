@@ -10,7 +10,7 @@ var delay = 0.05;
 var timer = 0;
 const shrinkPerSecond = 64;
 
-const chatImages = [];
+const chatImages = {};
 
 function setup() {
     createCanvas(1920, 1080);
@@ -55,13 +55,12 @@ function randomFill () {
 function draw() {
     clear();
     background('rgba(0,0,0,0.0)');
-    chatImages.forEach(({ img, x, y }) => {
+    Object.values(chatImages).forEach(({ img, x, y }) => {
         image(img, x, y);
     }) 
 }
 
 ComfyJS.onChat = (user, message, flags, self, extra) => {
-    console.log(extra);
     if(message.slice(0, 5).toLowerCase() === "stamp" && (extra.userState.subscriber || extra.userState.vip || extra.userState.mod )) {
         const index = Math.round(Math.random() * (images.length - 1));
         const img = images[index];
@@ -70,7 +69,13 @@ ComfyJS.onChat = (user, message, flags, self, extra) => {
         const y = yRadius * Math.cos(angle) + height / 2;
         xRadius -= (1 * delay) * shrinkPerSecond;
         yRadius -= (1 * delay) * shrinkPerSecond;
-        chatImages.push({ img, x, y });
+        chatImages[extra.id] = { img, x, y };
+        setTimeout(() => {
+            delete chatImages[extra.id];
+        }, 45000);
+    }
+    if(message === "clearstampsplease" && extra.userState.mod) {
+        chatImages = {};
     }
 };
 
